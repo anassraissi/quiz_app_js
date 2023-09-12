@@ -39,23 +39,50 @@ const data = [
   let qIndex=0;
   let correctCount=0;
   let wrongCount=0;
-  let total=0;
   let selectedanswer;
 
+  const playAgain=()=>{
+     qIndex=0;
+     correctCount=0;
+     wrongCount=0;
+    resultScreen.style.display="none";
+    gameScreen.style.display="block";
+    showQuestion(qIndex);
+  }
+  play.addEventListener('click',()=>{
+    
+     playAgain();
+  })
+
   const showQuestion=(qNumber)=>{
-    selectedanswer=null;
-    question.textContent = data[qNumber].question;
-    answersContainer.innerHTML = data[qNumber].answers
-      .map(
-        (item, index) =>
-          `
-    <div class="answer">
-        <input type="radio" id=${index} name="answer" value=${item.isCorrect} />
-        <label for="1">${item.answer}</label>
-    </div>
-    `
-      ).join("");
-      SelectedAnswer();
+    if(qNumber==data.length){
+          showResult();
+
+    }
+    else{
+      selectedanswer=null;
+      question.textContent = data[qNumber].question;
+      answersContainer.innerHTML = data[qNumber].answers
+        .map(
+          (item, index) =>
+            `
+      <div class="answer">
+          <input type="radio" id="radio" name="answer" value=${item.isCorrect} />
+          <label for="1">${item.answer}</label>
+      </div>
+      `
+        ).join("");
+        SelectedAnswer();
+    }
+
+  }
+  const showResult=()=>{
+    resultScreen.style.display="block";
+    gameScreen.style.display="none";
+    document.querySelector('.correct').textContent=`Correct answers : ${correctCount}`;
+    document.querySelector('.wrong').textContent=`Wrong answers : ${wrongCount}`;
+    document.querySelector('.score').textContent=`your score is : ${(correctCount-wrongCount)*10}`;
+
   }
 
   const SelectedAnswer=()=>{
@@ -67,15 +94,15 @@ const data = [
   }
   const submitAnswer=()=>{
       submit.addEventListener('click',()=>{
+
         if(selectedanswer !==null){
-            selectedanswer==='true'? correctCount++ : wrongCount++;
-            qIndex++;
-            showQuestion(qIndex);
+          selectedanswer==='true'? correctCount++ : wrongCount++;
+          qIndex++;
+          showQuestion(qIndex);  
         }
         else{
-            alert('you should chose an answer');
-        }
- 
+          alert('you should chose an answer');
+            }
         })
     }
     
